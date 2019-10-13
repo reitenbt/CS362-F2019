@@ -1606,7 +1606,7 @@ int cardEffectMine(int handPos, int choice1, int choice2, struct gameState *stat
 		case copper:
 		case silver:
 		case gold:
-			if (getCost(cardToTrash) + 3 > getCost(choice2))
+			if (getCost(cardToTrash) + 3 < getCost(choice2))
 				return -1;
 			break;
 		default:
