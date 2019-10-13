@@ -1230,7 +1230,7 @@ int cardEffectBaron(int handPos, int choice1, struct gameState *state)
 				// BARON BUG 1 OF 2
 				// Increase the player's number of Coins by 4.
 				while (state->coins < 4)
-					coins++;
+					state->coins++;
 				// END BARON BUG 1 OF 2
 
 				// Discard the found Estate to the discard pile.
