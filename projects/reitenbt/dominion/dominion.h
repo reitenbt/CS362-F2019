@@ -5,6 +5,7 @@
 
 #define MAX_HAND 500
 #define MAX_DECK 500
+#define MAX_TRASH 500
 
 #define MAX_PLAYERS 4
 
@@ -16,7 +17,9 @@
 /* hand# means index of a card in current active player's hand */
 
 enum CARD
-{   curse = 0,
+{  
+	BEGIN_ENUM_CARD = 0,
+	curse,
     estate,
     duchy,
     province,
@@ -49,7 +52,8 @@ enum CARD
     outpost,
     salvager, /* choice1 = hand# to trash */
     sea_hag,
-    treasure_map
+    treasure_map,
+	END_ENUM_CARD
 };
 
 struct gameState {
@@ -69,6 +73,8 @@ struct gameState {
     int deckCount[MAX_PLAYERS];
     int discard[MAX_PLAYERS][MAX_DECK];
     int discardCount[MAX_PLAYERS];
+	int trash[MAX_TRASH];
+	int trashCount;
     int playedCards[MAX_DECK];
     int playedCardCount;
 };
