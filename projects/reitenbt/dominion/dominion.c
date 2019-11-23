@@ -1197,6 +1197,8 @@ int cardEffectBaron(int handPos, int choice1, struct gameState *state)
 	// handPos = position of Baron
 	// choice1 = 1 for discard Estate, 0 for gain Estate
 
+	int i;
+
 	// Confirm that the player's selection is valid.
 	if (choice1 != 1 && choice1 != 0)
 		return -1;
@@ -1204,11 +1206,24 @@ int cardEffectBaron(int handPos, int choice1, struct gameState *state)
 	// Local variable for current player.
 	int currentPlayer = whoseTurn(state);
 
-	// Discard Baron to the played pile.
-	removeToDiscard(handPos, state);
-	
-	// Create a flag for whether an Estate was discarded.
+	// Local variable to track if the player has discarded an Estate.
 	int estateDiscarded = 0;
+
+	// Confirm the player can discard an Estate if chosen.
+	if (choice1 == 1)
+	{
+		int canDiscard = 0;
+		for (i = 0; i < state->handCount[currentPlayer]; i++)
+		{
+			if (state->hand[currentPlayer][i] == estate)
+				canDiscard = 1;
+		}
+		if (canDiscard == 0)
+			return -1;
+	}
+
+	// Discard Baron to the played pile.
+	removeToPlayed(handPos, state);
 
 	// Increment the player's Buys.
 	state->numBuys++;
@@ -1217,7 +1232,7 @@ int cardEffectBaron(int handPos, int choice1, struct gameState *state)
 	if (choice1 > 0)
 	{
 		// Find the first (left-most) Estate in hand.
-		for (int i = 0; i < state->handCount[currentPlayer]; i++)
+		for (i = 0; i < state->handCount[currentPlayer]; i++)
 		{
 			// If an Estate is found...
 			if (state->hand[currentPlayer][i] == estate)
@@ -1241,17 +1256,19 @@ int cardEffectBaron(int handPos, int choice1, struct gameState *state)
 				break;
 			}
 		}
-
+		/*
 		// Report a message if an Estate could not be discarded.
 		if (DEBUG && estateDiscarded == 0)
 		{
 			printf("No estate cards in your hand, invalid choice\n");
 			printf("Must gain an estate if there are any\n");
+			return -1;
 		}
+		*/
 	}
 
 	// If the player chose to gain an Estate or failed to discard an Estate.
-	if (choice1 == 0 || estateDiscarded == 0)
+	if (choice1 == 0) // || estateDiscarded == 0)
 	{
 		/* BEGIN BARON NON-BUG 2 OF 2
 		// Gain an Estate to the discard pile.
